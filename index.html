@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lainalaskuri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Open Sans', Arial, sans-serif;
+            /* Use Tori.fi's preferred font */
+            background-color: #F5F5F5;
+            /* Light gray background */
+        }
+
+        .banner {
+            width: 300px;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 0px solid #CACAD1;
+            /* Match Tori.fi's border color */
+            border-radius: 4px;
+            /* Adjusted for consistency with Tori.fi */
+            box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px 0px, rgba(0, 0, 0, 0.16) 0px 1px 1px 0px;
+            /* Updated shadow */
+            transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Add smooth transition */
+            cursor: pointer;
+            /* Pointer for hover effect */
+        }
+
+        .logo {
+            display: block;
+            width: 240px;
+            height: 80px;
+            background-color: #0073e6;
+            margin: 0 auto 20px auto;
+            border-radius: 4px;
+        }
+
+        .monthly-payment-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .monthly-payment-container small {
+            font-size: 14px;
+            color: #666;
+            display: block;
+        }
+
+        .monthly-payment-container strong {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000;
+            line-height: 1.2;
+            font-size: 34px;
+            /* Adjust for consistency */
+            color: #1B1B1F;
+            /* Tori.fi's default text color */
+        }
+
+        .monthly-payment-container span {
+            font-size: 20px;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+
+        .slider-container {
+            margin-bottom: 20px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #0073e6;
+            cursor: pointer;
+            background: #FF0000;
+            /* Tori.fi's primary red */
+        }
+
+        .info {
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .info .label {
+            flex: 1;
+        }
+
+        .info .value {
+            white-space: nowrap;
+            margin-left: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .info .unit {
+            margin-left: 2px;
+        }
+
+        .cta {
+            margin-top: auto;
+            padding: 12px;
+            background-color: #0073e6;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            background-color: #FF0000;
+            /* Tori.fi's primary red */
+            border-radius: 4px;
+            /* Adjusted radius */
+            transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Smooth transition */
+        }
+
+        .cta:hover {
+            background-color: #005bb5;
+            background-color: #CC0000;
+            /* Darker shade for hover effect */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner">
+        <!-- Logo Placeholder -->
+        <div class="logo"></div>
+
+        <!-- Monthly Payment Display -->
+        <div class="monthly-payment-container">
+            <small>Arvioitu kuukausierä:</small>
+            <strong id="monthlyPayment">Lasketaan...</strong>
+            <span>€/kk</span>
+        </div>
+
+        <!-- Sliders for Loan Amount and Duration -->
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Lainasumma (€):</span>
+                <span id="loanAmountLabel">20 000</span>
+            </div>
+            <input type="range" id="loanAmountSlider" class="slider" min="1000" max="30000" step="1000" value="20000">
+        </div>
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Laina-aika (vuodet):</span>
+                <span id="loanDurationLabel">6</span>
+            </div>
+            <input type="range" id="loanDurationSlider" class="slider" min="1" max="7" step="1" value="6">
+        </div>
+
+        <!-- Loan Information -->
+        <div class="info">
+            <span class="label">Luotonhoitomaksu:</span>
+            <span class="value">
+                <span id="staticMonthlyFee">6,00</span>
+                <span class="unit">€/kk</span>
+            </span>
+        </div>
+        <div class="info">
+            <span class="label">Nimelliskorko:</span>
+            <span class="value">
+                <span id="nominalInterest">9,95</span>
+                <span class="unit">%</span>
+            </span>
+        </div>
+        <div class="info">
+            <span class="label">KSL:n mukainen todellinen vuosikorko:</span>
+            <span class="value">
+                <span id="effectiveInterest">Lasketaan...</span>
+                <span class="unit">%</span>
+            </span>
+        </div>
+
+        <!-- CTA Button -->
+        <a class="cta" id="ctaLink" href="#" target="_blank">Hae lainaa</a>
+    </div>
+
+    <script>
+        // Constants
+        const nominalInterestRate = 9.95; // Nominal annual interest rate in %
+        const monthlyFee = 6; // Monthly fee in euros
+        const destinationUrl = "https://example.com/apply"; // Landing page URL
+        const urlPriceKey = "price";
+        const urlDurationKey = "duration";
+
+        // DOM Elements
+        const loanAmountSlider = document.getElementById("loanAmountSlider");
+        const loanDurationSlider = document.getElementById("loanDurationSlider");
+        const loanAmountLabel = document.getElementById("loanAmountLabel");
+        const loanDurationLabel = document.getElementById("loanDurationLabel");
+        const staticMonthlyFee = document.getElementById("staticMonthlyFee");
+        const monthlyPayment = document.getElementById("monthlyPayment");
+        const nominalInterest = document.getElementById("nominalInterest");
+        const effectiveInterest = document.getElementById("effectiveInterest");
+        const ctaLink = document.getElementById("ctaLink");
+
+        // Format value with two decimals and comma as decimal separator
+        function formatValue(value) {
+            return value.toFixed(2).replace(".", ",");
+        }
+
+        // Calculate effective annual rate per KSL
+        function calculateEffectiveAPR(amount, totalMonthlyPayment, months) {
+            // Cash flows: loan amount (negative), monthly payments (positive)
+            const cashFlows = [-amount, ...Array(months).fill(totalMonthlyPayment)];
+
+            // Calculate monthly IRR using Newton-Raphson method
+            const monthlyIRR = computeIRR(cashFlows);
+
+            // Calculate effective annual rate by compounding
+            const effectiveAnnualRate = (Math.pow(1 + monthlyIRR, 12) - 1) * 100;
+
+            return effectiveAnnualRate.toFixed(2).replace(".", ",");
+        }
+
+        // Compute IRR using Newton-Raphson method
+        function computeIRR(cashFlows, guess = 0.1) {
+            let rate = guess;
+            const maxIterations = 1000;
+            const precision = 1e-7;
+
+            for (let i = 0; i < maxIterations; i++) {
+                const npv = NPV(rate, cashFlows);
+                const derivative = NPV_Derivative(rate, cashFlows);
+
+                if (Math.abs(derivative) < precision) break;
+
+                const newRate = rate - npv / derivative;
+
+                if (Math.abs(newRate - rate) < precision) return rate;
+
+                rate = newRate;
+            }
+
+            return rate;
+        }
+
+        // Net Present Value (NPV)
+        function NPV(rate, cashFlows) {
+            return cashFlows.reduce((sum, cf, i) => sum + cf / Math.pow(1 + rate, i), 0);
+        }
+
+        // Derivative of NPV
+        function NPV_Derivative(rate, cashFlows) {
+            return cashFlows.reduce((sum, cf, i) => sum - i * cf / Math.pow(1 + rate, i + 1), 0);
+        }
+
+        // Update calculations and DOM elements
+        function updateCalculations() {
+            const loanAmount = parseInt(loanAmountSlider.value, 10);
+            const durationYears = parseInt(loanDurationSlider.value, 10);
+            const durationMonths = durationYears * 12;
+            const monthlyRate = nominalInterestRate / 100 / 12;
+
+            // Calculate monthly payment using annuity formula
+            const loanMonthlyPayment = loanAmount * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)));
+            const totalMonthlyPayment = loanMonthlyPayment + monthlyFee;
+            const totalPaymentRounded = Math.ceil(totalMonthlyPayment * 100) / 100; // Round up to 2 decimal places
+
+            // Calculate effective annual rate
+            const effectiveAnnualRate = calculateEffectiveAPR(loanAmount, totalMonthlyPayment, durationMonths);
+
+            // Update DOM elements
+            loanAmountLabel.textContent = loanAmount.toLocaleString("fi-FI");
+            loanDurationLabel.textContent = durationYears;
+            monthlyPayment.textContent = totalPaymentRounded.toLocaleString("fi-FI");
+            staticMonthlyFee.textContent = formatValue(monthlyFee);
+            nominalInterest.textContent = formatValue(nominalInterestRate);
+            effectiveInterest.textContent = effectiveAnnualRate;
+
+            // Update CTA URL
+            const finalUrl = `${destinationUrl}?${urlPriceKey}=${loanAmount}&${urlDurationKey}=${durationMonths}`;
+            ctaLink.href = finalUrl;
+        }
+
+        // Event listeners
+        loanAmountSlider.addEventListener("input", updateCalculations);
+        loanDurationSlider.addEventListener("input", updateCalculations);
+
+        // Initial calculations
+        updateCalculations();
+    </script>
+</body>
+
+</html>
